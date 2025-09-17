@@ -24,6 +24,17 @@ export default function Editor({ note, updateNote }) {
     setDateUpdated(new Date().toISOString()); // immediately reflect update
   };
 
+  useEffect(() => {
+    if (!note) return;
+
+    const timeout = setTimeout(() => {
+      updateNote(note.id, title, content);
+      setDateUpdated(new Date().toISOString());
+    }, 5000);
+
+    return () => clearTimeout(timeout);
+  }, [title, content, note.id]);
+
   return (
     <>
       <header className="flex items-center justify-between border-b-2 border-gray-300 px-2">
