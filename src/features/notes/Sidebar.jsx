@@ -72,7 +72,7 @@ export default function Sidebar({ notes, addNote, setActiveNoteId }) {
           <h2 className="font-medium text-zinc-400">Notes</h2>
           <ul>
             {notes.map(note => (
-              <li key={note.id} onClick={() => setActiveNoteId(note.id)} className="p-2 hover:bg-gray-200 rounded">{note.title || note.content}</li>
+              <li key={note.id} onClick={() => setActiveNoteId(note.id)} className="p-2 hover:bg-gray-200 rounded">{note.title || note.content || "Untitled"}</li>
             ))}
           </ul>
         </>
