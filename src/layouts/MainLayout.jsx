@@ -8,7 +8,7 @@ function MainLayout() {
             <aside className="h-full bg-gray-50 m-0 p-0">
                 <Sidebar />
             </aside>
-            <main className='p-4 m-0 bg-white w-full h-full'>
+            <main className='p-2 bg-white w-full h-full'>
                 <Editor />
             </main>
         </div>
