@@ -3,43 +3,72 @@ import { useState } from "react";
 export default function Sidebar() {
   const [isHidden, setIsHidden] = useState(false);
 
-  const toggleSidebar = () => {
-    setIsHidden(!isHidden);
-  };
+  const toggleSidebar = () => setIsHidden(!isHidden);
 
   return (
     <div
-      className={`h-full bg-gray-100 p-4 transition-all duration-300 ${isHidden ? 'w-14' : 'w-64'}`}
-      style={{ overflow: 'hidden' }}
+      className={`h-full bg-gray-100  m-0 transition-all duration-300 ${isHidden ? "w-14 p-2 pt-4" : "w-64 p-4"
+        }`}
+      style={{ overflow: "hidden" }}
     >
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex items-center justify-between mb-4  border-b-2 border-gray-200">
         {isHidden ? (
-          <div className="relative group w-full flex justify-center">
-            <a href="#" className="opacity-100 group-hover:opacity-0 transition-opacity"><img src="logo.svg" alt="Suru logo" /></a>
+          <div className="group flex justify-center p-2 rounded hover:bg-gray-200">
+            <a
+              href="#"
+              className="block group-hover:hidden transition-opacity"
+            >
+              <img src="logo.svg" alt="Suru logo" />
+            </a>
             <button
               title="Open sidebar"
               onClick={toggleSidebar}
-              className="absolute right-0 top-0 opacity-0 group-hover:opacity-100 transition-opacity"
+              className="hidden group-hover:block transition-opacity"
             >
               <img src="show.svg" alt="Show Icon" />
             </button>
           </div>
         ) : (
           <>
-            <div className="flex gap-2">
+            <div className="flex gap-2 items-center">
               <img src="logo.svg" alt="Suru logo" />
               <h1 className="font-bold text-2xl">Suru</h1>
             </div>
-            <button title="Close sidebar" onClick={toggleSidebar}><img src="hide.svg" alt="Hide Icon" /></button>
+            <button
+              className="p-2 hover:bg-gray-200 rounded"
+              title="Close sidebar"
+              onClick={toggleSidebar}
+            >
+              <img src="hide.svg" alt="Hide Icon" />
+            </button>
           </>
         )}
       </div>
+
+      <div className="flex flex-col mb-4">
+        <button className="flex gap-2 p-2 hover:bg-gray-200 rounded">
+          <img src="file-plus.svg" alt="File Icon" />{" "}
+          {!isHidden && <span>New Note</span>}
+        </button>
+        <button className="flex gap-2 p-2 hover:bg-gray-200 rounded">
+          <img src="profile.svg" alt="Profile Icon" />{" "}
+          {!isHidden && <span>Profile</span>}
+        </button>
+        <button className="flex gap-2 p-2 hover:bg-gray-200 rounded">
+          <img src="settings.svg" alt="Settings Icon" />{" "}
+          {!isHidden && <span>Settings</span>}
+        </button>
+      </div>
+
       {!isHidden && (
-        <ul className="space-y-2">
-          <li className="p-2 hover:bg-gray-200 rounded">Note 1</li>
-          <li className="p-2 hover:bg-gray-200 rounded">Note 2</li>
-          <li className="p-2 hover:bg-gray-200 rounded">Note 3</li>
-        </ul>
+        <>
+          <h2 className="font-medium text-zinc-400">Notes</h2>
+          <ul className="">
+            <li className="p-2 hover:bg-gray-200 rounded">Note 1</li>
+            <li className="p-2 hover:bg-gray-200 rounded">Note 2</li>
+            <li className="p-2 hover:bg-gray-200 rounded">Note 3</li>
+          </ul>
+        </>
       )}
     </div>
   );
