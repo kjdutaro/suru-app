@@ -2,28 +2,21 @@ import { useState, useEffect } from "react";
 
 export default function Editor({ note, updateNote }) {
   const [title, setTitle] = useState("");
-  const [content, setContent] = useState("")
-  const [dateCreated, setDateCreated] = useState("")
-  const [dateUpdated, setDateUpdated] = useState("")
+  const [content, setContent] = useState("");
+  const [dateCreated, setDateCreated] = useState("");
+  const [dateUpdated, setDateUpdated] = useState("");
 
+  // When note changes, update editor fields
   useEffect(() => {
     if (note) {
-      setTitle(note.title),
-      setContent(note.content),
-      setDateCreated(note.createdAt),
-      setDateUpdated(note.updatedAt)
+      setTitle(note.title);
+      setContent(note.content);
+      setDateCreated(note.createdAt);
+      setDateUpdated(note.updatedAt);
     }
-  }, [note])
+  }, [note]);
 
-  if (!note) {
-    return <div className="p-4">Select or create a note</div>;
-  }
-
-  const handleSave = () => {
-    updateNote(note.id, title, content);
-    setDateUpdated(new Date().toISOString()); // immediately reflect update
-  };
-
+  // Auto-save (only runs if note exists)
   useEffect(() => {
     if (!note) return;
 
@@ -33,20 +26,40 @@ export default function Editor({ note, updateNote }) {
     }, 5000);
 
     return () => clearTimeout(timeout);
-  }, [title, content, note.id]);
+  }, [note, title, content]);
+
+  const handleSave = () => {
+    if (!note) return;
+    updateNote(note.id, title, content);
+    setDateUpdated(new Date().toISOString());
+  };
+
+  // 🔑 Notice: hooks above ALWAYS run, return is just conditional render
+  if (!note) {
+    return <div className="p-4">Select or create a note</div>;
+  }
 
   return (
     <>
       <header className="flex items-center justify-between border-b-2 border-gray-300 px-2">
-        <input type="text" placeholder="Untitled" value={title} onChange={(e) => setTitle(e.target.value)} />
+        <input
+          type="text"
+          placeholder="Untitled"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
         <div className="flex items-center justify-end">
-          <button className="p-2 hover:bg-gray-200 rounded" title="Undo" >
+          <button className="p-2 hover:bg-gray-200 rounded" title="Undo">
             <img src="undo.svg" alt="Undo Icon" />
           </button>
           <button className="p-2 hover:bg-gray-200 rounded" title="Redo">
             <img src="redo.svg" alt="Redo Icon" />
           </button>
-          <button className="p-2 hover:bg-gray-200 rounded" title="Save" onClick={handleSave}>
+          <button
+            className="p-2 hover:bg-gray-200 rounded"
+            title="Save"
+            onClick={handleSave}
+          >
             <img src="save.svg" alt="Save Icon" />
           </button>
           <button className="p-2 hover:bg-gray-200 rounded" title="Sync">
@@ -64,7 +77,12 @@ export default function Editor({ note, updateNote }) {
         <small>Created: {new Date(dateCreated).toLocaleString()}</small>
         <small>Updated: {new Date(dateUpdated).toLocaleString()}</small>
       </div>
-      <textarea className="w-full p-2" placeholder="Start writing your note..." value={content} onChange={(e) => setContent(e.target.value)}></textarea>
+      <textarea
+        className="w-full p-2"
+        placeholder="Start writing your note..."
+        value={content}
+        onChange={(e) => setContent(e.target.value)}
+      ></textarea>
     </>
   );
 }
