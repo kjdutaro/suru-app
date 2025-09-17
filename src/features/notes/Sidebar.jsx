@@ -46,15 +46,15 @@ export default function Sidebar() {
       </div>
 
       <div className="flex flex-col mb-4">
-        <button className="flex gap-2 p-2 hover:bg-gray-200 rounded">
+        <button title="New Note" className="flex gap-2 p-2 hover:bg-gray-200 rounded">
           <img src="file-plus.svg" alt="File Icon" />{" "}
           {!isHidden && <span>New Note</span>}
         </button>
-        <button className="flex gap-2 p-2 hover:bg-gray-200 rounded">
+        <button title="Profile" className="flex gap-2 p-2 hover:bg-gray-200 rounded">
           <img src="profile.svg" alt="Profile Icon" />{" "}
           {!isHidden && <span>Profile</span>}
         </button>
-        <button className="flex gap-2 p-2 hover:bg-gray-200 rounded">
+        <button title="Settings" className="flex gap-2 p-2 hover:bg-gray-200 rounded">
           <img src="settings.svg" alt="Settings Icon" />{" "}
           {!isHidden && <span>Settings</span>}
         </button>
