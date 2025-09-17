@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function Sidebar() {
+export default function Sidebar({ notes, addNote, setActiveNoteId }) {
   const [isHidden, setIsHidden] = useState(false);
 
   const toggleSidebar = () => setIsHidden(!isHidden);
@@ -46,7 +46,14 @@ export default function Sidebar() {
       </div>
 
       <div className="flex flex-col mb-4">
-        <button title="New Note" className="flex gap-2 p-2 hover:bg-gray-200 rounded">
+        <button
+          onClick={() => {
+            const created = addNote("", "");
+            setActiveNoteId(created.id);
+          }}
+          title="New Note"
+          className="flex gap-2 p-2 hover:bg-gray-200 rounded"
+        >
           <img src="file-plus.svg" alt="File Icon" />{" "}
           {!isHidden && <span>New Note</span>}
         </button>
@@ -63,10 +70,10 @@ export default function Sidebar() {
       {!isHidden && (
         <>
           <h2 className="font-medium text-zinc-400">Notes</h2>
-          <ul className="">
-            <li className="p-2 hover:bg-gray-200 rounded">Note 1</li>
-            <li className="p-2 hover:bg-gray-200 rounded">Note 2</li>
-            <li className="p-2 hover:bg-gray-200 rounded">Note 3</li>
+          <ul>
+            {notes.map(note => (
+              <li key={note.id} onClick={() => setActiveNoteId(note.id)} className="p-2 hover:bg-gray-200 rounded">{note.title || note.content}</li>
+            ))}
           </ul>
         </>
       )}
