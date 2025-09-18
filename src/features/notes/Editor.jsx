@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-export default function Editor({ note, updateNote }) {
+export default function Editor({ note, updateNote, deleteNote }) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [dateCreated, setDateCreated] = useState("");
@@ -34,6 +34,11 @@ export default function Editor({ note, updateNote }) {
     setDateUpdated(new Date().toISOString());
   };
 
+  const handleDelete = () => {
+    if (!note) return;
+    deleteNote(note.id);
+  }
+
   // 🔑 Notice: hooks above ALWAYS run, return is just conditional render
   if (!note) {
     return <div className="p-4">Select or create a note</div>;
@@ -65,7 +70,11 @@ export default function Editor({ note, updateNote }) {
           <button className="p-2 hover:bg-gray-200 rounded" title="Sync">
             <img src="sync.svg" alt="Sync Icon" />
           </button>
-          <button className="p-2 hover:bg-gray-200 rounded" title="Delete Note">
+          <button
+            className="p-2 hover:bg-gray-200 rounded"
+            title="Delete Note"
+            onClick={handleDelete}
+          >
             <img src="delete.svg" alt="Delete Icon" />
           </button>
           <button className="p-2 hover:bg-gray-200 rounded" title="Options">

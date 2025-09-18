@@ -4,7 +4,7 @@ import useNote from '../hooks/useNote';
 import { useState } from 'react';
 
 function MainLayout() {
-    const { notes, addNote, updateNote } = useNote();
+    const { notes, addNote, updateNote, deleteNote } = useNote();
     const [activeNoteId, setActiveNoteId] = useState(null);
     const activeNote = notes.find(note => note.id === activeNoteId);
 
@@ -18,7 +18,14 @@ function MainLayout() {
                     setActiveNoteId={setActiveNoteId} />
             </aside>
             <main className='p-2 bg-white w-full h-full'>
-                <Editor note={activeNote} updateNote={updateNote}/>
+                <Editor 
+                    note={activeNote} 
+                    updateNote={updateNote}
+                    deleteNote={(id) => {
+                        deleteNote(id);
+                        setActiveNoteId(null);
+                    }}
+                />
             </main>
         </div>
     )

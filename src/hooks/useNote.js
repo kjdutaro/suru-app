@@ -28,9 +28,14 @@ export default function useNote() {
     );
   };
 
+  const deleteNote =(id) => {
+    setNotes(prevNotes => prevNotes.filter(note => note.id !== id));
+  }
+
   return {
     notes,
     addNote,
     updateNote,
+    deleteNote
   };
 }
