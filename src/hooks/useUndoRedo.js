@@ -5,6 +5,7 @@ export default function useUndoRedo(initialState = "") {
   const [pointer, setPointer] = useState(0);
   const current = history[pointer];
   const canUndo = pointer > 0;
+  const canRedo = pointer < history.length - 1;
 
   const set = useCallback(
     (newValue) => {
@@ -17,15 +18,22 @@ export default function useUndoRedo(initialState = "") {
   );
 
   const undo = useCallback(() => {
-    if (pointer > 0) {
-      setPointer(pointer - 1);
+    if (canUndo) {
+      setPointer((prev) => prev - 1);
     }
-  }, [pointer]);
+  }, [canUndo]);
+
+  const redo = useCallback(() => {
+    if (canRedo) {
+      setPointer((prev) => prev + 1);
+    }}, [canRedo]);
 
   return {
     value: current,
     set,
     undo,
-    canUndo
+    redo,
+    canUndo,
+    canRedo
   };
 }

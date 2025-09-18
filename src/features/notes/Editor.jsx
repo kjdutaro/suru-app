@@ -10,7 +10,9 @@ export default function Editor({ note, updateNote, deleteNote }) {
     value: content,
     set: setContent,
     undo,
-    canUndo
+    redo,
+    canUndo,
+    canRedo
   } = useUndoRedo(note ? note.content : "");
 
 
@@ -73,7 +75,11 @@ export default function Editor({ note, updateNote, deleteNote }) {
           >
             <img src="undo.svg" alt="Undo Icon" />
           </button>
-          <button className="p-2 hover:bg-gray-200 rounded" title="Redo">
+          <button 
+            className={`p-2 rounded ${canRedo ? "hover:bg-gray-200" : "opacity-50 cursor-not-allowed"}`} title="Redo"
+            onClick={redo}
+            disabled={!canRedo}
+          >
             <img src="redo.svg" alt="Redo Icon" />
           </button>
           <button
