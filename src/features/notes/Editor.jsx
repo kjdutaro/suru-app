@@ -25,7 +25,7 @@
         setDateUpdated(note.updatedAt);
         reset(note.content);
       }
-    }, [note, reset]);
+    }, [note?.id, reset]);
 
 
     // Auto-save (only runs if note exists)
