@@ -1,18 +1,29 @@
 import { useState, useEffect } from "react";
+import useUndoRedo from "../../hooks/useUndoRedo";
 
 export default function Editor({ note, updateNote, deleteNote }) {
   const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
   const [dateCreated, setDateCreated] = useState("");
   const [dateUpdated, setDateUpdated] = useState("");
+
+  const {
+    value: content,
+    set: setContent,
+    undo,
+    canUndo
+  } = useUndoRedo(note ? note.content : "");
+
 
   // When note changes, update editor fields
   useEffect(() => {
     if (note) {
       setTitle(note.title);
-      setContent(note.content);
       setDateCreated(note.createdAt);
       setDateUpdated(note.updatedAt);
+
+      if (note.content !== content) {
+        setContent(note.content);
+      }
     }
   }, [note]);
 
@@ -54,7 +65,12 @@ export default function Editor({ note, updateNote, deleteNote }) {
           onChange={(e) => setTitle(e.target.value)}
         />
         <div className="flex items-center justify-end">
-          <button className="p-2 hover:bg-gray-200 rounded" title="Undo">
+          <button
+            className={`p-2 rounded ${canUndo ? "hover:bg-gray-200" : "opacity-50 cursor-not-allowed"}`}
+            title="Undo"
+            onClick={undo}
+            disabled={!canUndo}
+          >
             <img src="undo.svg" alt="Undo Icon" />
           </button>
           <button className="p-2 hover:bg-gray-200 rounded" title="Redo">
