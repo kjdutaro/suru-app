@@ -28,11 +28,17 @@ export default function useUndoRedo(initialState = "") {
       setPointer((prev) => prev + 1);
     }}, [canRedo]);
 
+    const reset = useCallback((newState = "") => {
+        setHistory([newState]);
+        setPointer(0)
+    },[]);
+
   return {
     value: current,
     set,
     undo,
     redo,
+    reset,
     canUndo,
     canRedo
   };
