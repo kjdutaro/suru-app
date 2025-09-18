@@ -1,36 +1,41 @@
 // hooks/useNote.jsx
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { loadFromStorage, saveToStorage } from "../utils/storage";
 
 export default function useNote() {
-  const [notes, setNotes] = useState([]);
+  const [notes, setNotes] = useState(() => loadFromStorage("notes", []));
 
-  const addNote = (title = "", content = "") => {
+
+  useEffect(() => {
+    saveToStorage("notes", notes);
+    console.log("Notes saved to localStorage:", notes);
+  }, [notes]);
+
+  const addNote = useCallback((title = "", content = "") => {
     const now = new Date().toISOString();
     const newNote = {
-      id: crypto.randomUUID(), // or use uuidv4()
+      id: crypto.randomUUID(),
       title,
       content,
       createdAt: now,
       updatedAt: now,
     };
-
     setNotes(prev => [...prev, newNote]);
-    console.log("Note added:", newNote);
     return newNote;
-  };
+  }, []);
 
-  const updateNote = (id, title, content) => {
+  const updateNote = useCallback((id, title, content) => {
     const now = new Date().toISOString();
     setNotes(prevNotes =>
       prevNotes.map(note =>
         note.id === id ? { ...note, title, content, updatedAt: now } : note
       )
     );
-  };
+  }, []);
 
-  const deleteNote =(id) => {
+  const deleteNote = useCallback((id) => {
     setNotes(prevNotes => prevNotes.filter(note => note.id !== id));
-  }
+  }, [])
 
   return {
     notes,
