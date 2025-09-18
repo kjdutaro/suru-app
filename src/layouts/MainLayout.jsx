@@ -1,11 +1,17 @@
 import Sidebar from './../features/notes/Sidebar';
 import Editor from './../features/notes/Editor';
 import useNote from '../hooks/useNote';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 function MainLayout() {
     const { notes, addNote, updateNote, deleteNote } = useNote();
     const [activeNoteId, setActiveNoteId] = useState(null);
+
+    useEffect(() => {
+        if (notes.length > 0 && !activeNoteId) {
+            setActiveNoteId(notes[notes.length - 1].id);
+        }
+    }, [notes, activeNoteId]);
     const activeNote = notes.find(note => note.id === activeNoteId);
 
 
@@ -18,8 +24,8 @@ function MainLayout() {
                     setActiveNoteId={setActiveNoteId} />
             </aside>
             <main className='p-2 bg-white w-full h-full'>
-                <Editor 
-                    note={activeNote} 
+                <Editor
+                    note={activeNote}
                     updateNote={updateNote}
                     deleteNote={(id) => {
                         deleteNote(id);
