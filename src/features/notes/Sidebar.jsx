@@ -1,9 +1,12 @@
 import { useState } from "react";
 
-export default function Sidebar({ notes, addNote, setActiveNoteId }) {
+export default function Sidebar({ notes, addNote, setActiveNoteId, closeSidebar }) {
   const [isHidden, setIsHidden] = useState(false);
 
-  const toggleSidebar = () => setIsHidden(!isHidden);
+  const toggleSidebar = () => {
+    setIsHidden(!isHidden);
+    if (closeSidebar) closeSidebar(); // close floating sidebar in mobile
+  };
 
   return (
     <div
@@ -11,19 +14,13 @@ export default function Sidebar({ notes, addNote, setActiveNoteId }) {
         }`}
       style={{ overflow: "hidden" }}
     >
-      <div className="flex items-center justify-between mb-4  border-b-2 border-gray-200">
+      <div className="flex items-center justify-between mb-4 border-b-2 border-gray-200">
         {isHidden ? (
           <div className="group flex justify-center p-2 rounded hover:bg-gray-200">
-            <a
-              href="#"
-              className="block group-hover:hidden transition-opacity"
-            >
-              <img src="logo.svg" alt="Suru logo" />
-            </a>
             <button
               title="Open sidebar"
-              onClick={toggleSidebar}
-              className="hidden group-hover:block transition-opacity"
+              onClick={() => setIsHidden(false)}
+              className="transition-opacity"
             >
               <img src="show.svg" alt="Show Icon" />
             </button>

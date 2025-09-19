@@ -2,7 +2,7 @@ import { useState, useEffect, use } from "react";
 import useUndoRedo from "../../hooks/useUndoRedo";
 import EditorHeader from "./EditorHeader";
 
-export default function Editor({ note, updateNote, deleteNote }) {
+export default function Editor({ note, updateNote, deleteNote, openSidebar }) {
   const [title, setTitle] = useState("");
   const [dateCreated, setDateCreated] = useState("");
   const [dateUpdated, setDateUpdated] = useState("");
@@ -76,6 +76,7 @@ export default function Editor({ note, updateNote, deleteNote }) {
         redo={redo}
         handleSave={handleSave}
         handleDelete={handleDelete}
+        openSidebar={openSidebar}
       />
 
       <div className="flex gap-4">
