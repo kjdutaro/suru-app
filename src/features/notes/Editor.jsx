@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 import useUndoRedo from "../../hooks/useUndoRedo";
 import EditorHeader from "./EditorHeader";
 
@@ -27,15 +27,28 @@ export default function Editor({ note, updateNote, deleteNote }) {
     }
   }, [note?.id, reset]);
 
-  // Auto-save
+  // Auto-save (debounce) when title or content changes
   useEffect(() => {
     if (!note) return;
+    if (title === note.title && content === note.content) return;
+
     const timeout = setTimeout(() => {
       updateNote(note.id, title, content);
       setDateUpdated(new Date().toISOString());
-    }, 5000);
+    }, 1500);
     return () => clearTimeout(timeout);
-  }, [note, title, content]);
+  }, [note, title, content, updateNote]);
+
+  useEffect(() => {
+    if (!note) return;
+
+    const interval = setInterval(() => {
+      updateNote(note.id, title, content);
+      setDateUpdated(new Date().toISOString());
+    }, 30000);
+
+    return () => clearInterval(interval);
+  }, [note, title, content, updateNote]);
 
   const handleSave = () => {
     if (!note) return;
