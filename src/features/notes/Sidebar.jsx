@@ -54,14 +54,14 @@ export default function Sidebar({ notes, addNote, setActiveNoteId, closeSidebar 
           <img src="file-plus.svg" alt="File Icon" />{" "}
           {!isHidden && <span>New Note</span>}
         </button>
-        <button title="Profile" className="flex gap-2 p-2 hover:bg-gray-200 rounded">
+        {/* <button title="Profile" className="flex gap-2 p-2 hover:bg-gray-200 rounded">
           <img src="profile.svg" alt="Profile Icon" />{" "}
           {!isHidden && <span>Profile</span>}
         </button>
         <button title="Settings" className="flex gap-2 p-2 hover:bg-gray-200 rounded">
           <img src="settings.svg" alt="Settings Icon" />{" "}
           {!isHidden && <span>Settings</span>}
-        </button>
+        </button> */}
       </div>
 
       {!isHidden && (
