@@ -14,7 +14,23 @@ function MainLayout() {
         }
     }, [notes, activeNoteId]);
 
-    const activeNote = notes.find(note => note.id === activeNoteId);
+    // If no notes exist, create a temporary "draft" object
+    // Draft template (no id, so it's not persisted)
+    const draftNote = {
+        title: "",
+        content: "",
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        isDraft: true,
+    };
+
+    // Always create a fresh draftNote when there are no notes
+    const activeNote =
+        notes.length === 0
+            ? { ...draftNote } // ensure new object each time
+            : notes.find((note) => note.id === activeNoteId) || null;
+
+
 
     return (
         <div className="flex h-full w-full">
@@ -58,12 +74,20 @@ function MainLayout() {
 
             <main className="flex-1 p-2 bg-white h-full">
                 <Editor
+                    key={activeNote?.id || (activeNote?.isDraft ? `draft-${activeNote.createdAt}` : "empty")}
                     note={activeNote}
                     updateNote={updateNote}
                     deleteNote={(id) => {
                         deleteNote(id);
-                        setActiveNoteId(null);
+                        const remaining = notes.filter((n) => n.id !== id);
+                        if (remaining.length === 0) {
+                            setActiveNoteId(null); // forces fresh draftNote
+                        } else {
+                            setActiveNoteId(remaining[0].id);
+                        }
                     }}
+                    addNote={addNote}
+                    setActiveNoteId={setActiveNoteId}
                     openSidebar={() => setIsSidebarOpen(true)}
                 />
             </main>

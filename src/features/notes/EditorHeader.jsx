@@ -7,7 +7,8 @@ export default function EditorHeader({
     redo,
     handleSave,
     handleDelete,
-    openSidebar, // new prop
+    openSidebar,
+    isDraft
 }) {
     return (
         <header className="border-b-2 border-gray-300 px-2 py-1">
@@ -53,12 +54,14 @@ export default function EditorHeader({
                         <img src="sync.svg" alt="Sync Icon" />
                     </button> */}
                     <button
-                        className="p-2 hover:bg-gray-200 rounded"
+                        className={`p-2 rounded ${!isDraft ? "hover:bg-gray-200" : "opacity-50 cursor-not-allowed"}`}
                         title="Delete Note"
                         onClick={handleDelete}
+                        disabled={isDraft}
                     >
                         <img src="delete.svg" alt="Delete Icon" />
                     </button>
+
                     {/* <button className="p-2 hover:bg-gray-200 rounded" title="Options">
                         <img src="options.svg" alt="Menu Icon" />
                     </button> */}
